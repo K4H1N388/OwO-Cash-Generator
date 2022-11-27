@@ -1,4 +1,4 @@
-#BOT ÖZELLİKLERİ , KULLANIM KLAVUZU, lISANCE
+BOT ÖZELLİKLERİ , KULLANIM KLAVUZU, lISANCE
 
 Cf ve slot nasıl çalışır?
 
@@ -35,9 +35,3 @@ Start isimli bat dosyasını açmanız yeterli olacaktır. (settings dosyası do
 İlgili Görseller
 
 https://i.imgur.com/D9Mn9R0.png
-
-Maalesef console resminden başka bir resim koyamıyorum ilan detaylarına bunun sebebide sistemin çalışma mantığının komutlara dayalı olmamasıdır.
-
-İndirim
-
-Altyapı kısa süreliğine indirimli fiyattan satılacaktır. 29.99 yerine sadece 11.99
