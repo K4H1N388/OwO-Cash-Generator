@@ -1,9 +1,10 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
-const { JsonDatabase } = require("wio.db");
 const settings = require("./settings.json");
 const { token, ownerName, channel, owo } = require("./settings.json");
-const db = new JsonDatabase("db");
+const { QuickDB } = require('quick.db');
+const db = new QuickDB();
+
 const 
 	cfOnly = settings.gameSettings.cf,
 	slotOnly = settings.gameSettings.slot,
@@ -32,6 +33,7 @@ client.on("ready", async () => {
 	} else {
 		await console.log("The coin toss system could not be run because it was turned off.")
 	} // Encoded By K4H1N
+
 	if(slotOnly == true){
 		await console.log("Checking the slot system...")
 		slotOpen()
@@ -39,6 +41,7 @@ client.on("ready", async () => {
 	} else { // Encoded By K4H1N
 		await console.log("The slot system could not be run because it was turned off.")
 	}
+	
 	await console.log(" ")
 	await console.log("Necessary settings have been made. The system is being activated.")
 	console.log("ACTIVE") // Encoded By K4H1N
@@ -72,7 +75,7 @@ function slotOpen(){
 }
 
 setInterval(function(){
-	var status = db.fetch("owoVerification") || 0
+	var status = db.get("owoVerification") || 0
 	if(status !== 0) return // Encoded By K4H1N
 	let channels = client.channels.get(channel)
 	if(channels){
@@ -84,7 +87,7 @@ setInterval(function(){
 }, 300000)
 
 function ggCfNextRaunt() { // Encoded By K4H1N
-	var oldCf = db.fetch("cfNumber") || 1
+	var oldCf = db.get("cfNumber") || 1
 	if(oldCf == 5 || oldCf > 5){
 		setTimeout(function(){
 			let channels = client.channels.get(channel)
@@ -111,7 +114,7 @@ function ggCfNextRaunt() { // Encoded By K4H1N
 }
 // Encoded By K4H1N
 function ggSlotNextRount() {
-	var oldSlot = db.fetch("slotNumber") || 1
+	var oldSlot = db.get("slotNumber") || 1
 	if(oldSlot == 5 || oldSlot > 5){ // Encoded By K4H1N
 		setTimeout(function(){
 			let channels = client.channels.get(channel) // Encoded By K4H1N
@@ -192,7 +195,7 @@ function startsAgaing(){
 }
 
 client.on("messageUpdate", async (oldMessage, newMessage) => { // Encoded By K4H1N
-	const cfData = db.fetch("cfData") || false
+	const cfData = db.get("cfData") || false
 	if(cfData == false) return
 	try {
 		if(newMessage.member.id !== owo) return // Encoded By K4H1N
@@ -200,33 +203,40 @@ client.on("messageUpdate", async (oldMessage, newMessage) => { // Encoded By K4H
 		if(newMessage.member.id !== owo) return	
 		if(!newMessage.content.startsWith(`**${ownerName}**`)) return // Encoded By K4H1N
 
-		var status = db.fetch("owoVerification") || 0
-		var oldCf = db.fetch("cfNumber") || 1
+		var status = db.get("owoVerification") || 0
+		var oldCf = db.get("cfNumber") || 1
 		if(newMessage.content.endsWith(":c")) { // Encoded By K4H1N
-			if(oldCf == 1){
-				if(status !== 0) return
-				db.set("cfNumber", 2)
-				ggCfNextRaunt() // Encoded By K4H1N
-			}
-			if(oldCf == 2){
-				if(status !== 0) return
-				db.set("cfNumber", 3)
-				ggCfNextRaunt() // Encoded By K4H1N
-			}
-			if(oldCf == 3){
-				if(status !== 0) return
-				db.set("cfNumber", 4)
-				ggCfNextRaunt() // Encoded By K4H1N
-			}
-			if(oldCf == 4){
-				if(status !== 0) return
-				db.set("cfNumber", 5) // Encoded By K4H1N
-				ggCfNextRaunt()
-			}
-			if(oldCf == 5){
-				if(status !== 0) return
-				db.set("cfNumber", 1) // Encoded By K4H1N 
-				ggCfNextRaunt()
+			if(status !== 0) return
+			switch (oldCf) {
+				case 1: {
+					db.set("cfNumber", 2)
+					ggCfNextRaunt() // Encoded By K4H1N
+					break
+				}
+
+				case 2: {
+					db.set("cfNumber", 3)
+					ggCfNextRaunt()
+					break
+				}
+
+				case 3: {
+					db.set("cfNumber", 4)
+					ggCfNextRaunt()
+					break
+				}
+
+				case 4: {
+					db.set("cfNumber", 5)
+					ggCfNextRaunt()
+					break
+				}
+
+				case 5: {
+					db.set("cfNumber", 1)
+					ggCfNextRaunt()
+					break
+				}
 			}
 		} else {
 			if(status !== 0) return
@@ -242,7 +252,7 @@ client.on("messageUpdate", async (oldMessage, newMessage) => { // Encoded By K4H
 
 
 client.on("messageUpdate", async (oldMessage, newMessage) => { // Encoded By K4H1N
-	const slotData = db.fetch("slotData") || false
+	const slotData = db.get("slotData") || false
 	if(slotData == false) return
 	try {
 		if(newMessage.member.id !== owo) return // Encoded By K4H1N
@@ -250,33 +260,41 @@ client.on("messageUpdate", async (oldMessage, newMessage) => { // Encoded By K4H
 		if(newMessage.member.id !== owo) return	
 		if(!newMessage.content.includes(`**${ownerName}**`)) return // Encoded By K4H1N
 
-		var status = db.fetch("owoVerification") || 0
-		var oldSlot = db.fetch("slotNumber") || 1 // Encoded By K4H1N
+		var status = db.get("owoVerification") || 0
+		var oldSlot = db.get("slotNumber") || 1 // Encoded By K4H1N
 		if(newMessage.content.includes(":c")) {
-			if(oldSlot == 1){
-				if(status !== 0) return
-				db.set("slotNumber", 2) // Encoded By K4H1N
-				ggSlotNextRount()
-			}
-			if(oldSlot == 2){
-				if(status !== 0) return // Encoded By K4H1N
-				db.set("slotNumber", 3)
-				ggSlotNextRount()
-			}
-			if(oldSlot == 3){
-				if(status !== 0) return // Encoded By K4H1N
-				db.set("slotNumber", 4)
-				ggSlotNextRount()
-			}
-			if(oldSlot == 4){
-				if(status !== 0) return
-				db.set("slotNumber", 5)
-				ggSlotNextRount() // Encoded By K4H1N
-			}
-			if(oldSlot == 5){
-				if(status !== 0) return
-				db.set("slotNumber", 1)
-				ggSlotNextRount() // Encoded By K4H1N
+			if(status !== 0) return
+
+			switch (oldSlot) {
+				case 1: {
+					db.set("slotNumber", 2) // Encoded By K4H1N
+					ggSlotNextRount()
+					break
+				}
+
+				case 2: {
+					db.set("slotNumber", 3) // Encoded By K4H1N
+					ggSlotNextRount()
+					break
+				}
+
+				case 3: {
+					db.set("slotNumber", 4) // Encoded By K4H1N
+					ggSlotNextRount()
+					break
+				}
+
+				case 4: {
+					db.set("slotNumber", 5) // Encoded By K4H1N
+					ggSlotNextRount()
+					break
+				}
+
+				case 5: {
+					db.set("slotNumber", 1) // Encoded By K4H1N
+					ggSlotNextRount()
+					break
+				}
 			}
 		} else {
 			if(status !== 0) return // Encoded By K4H1N
