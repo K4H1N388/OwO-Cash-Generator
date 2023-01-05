@@ -51,8 +51,8 @@ client.on("ready", async () => {
 	await console.log("-------------------------------------------------------------------------------")
 })
 
-function cfOpen(){
-	db.set("cfData", true)
+async function cfOpen(){
+	await db.set("cfData", true)
 	let channels = client.channels.get(channel)
 	if(channel) { // Encoded By K4H1N
 		setTimeout(function(){
@@ -92,7 +92,7 @@ setInterval(async () => {
 async function ggCfNextRaunt() { // Encoded By K4H1N
 	var oldCf = await db.get("cfNumber") || 1
 	if(oldCf == 5 || oldCf > 5){
-		setTimeout(function(){
+		setTimeout(async () => {
 			let channels = client.channels.get(channel)
 			if(channels) {
 				channels.send(`owo cf ${cfCash["1"]}`);
@@ -119,7 +119,7 @@ async function ggCfNextRaunt() { // Encoded By K4H1N
 async function ggSlotNextRount() {
 	var oldSlot = await db.get("slotNumber") || 1
 	if(oldSlot == 5 || oldSlot > 5){ // Encoded By K4H1N
-		setTimeout(function(){
+		setTimeout(async () => {
 			let channels = client.channels.get(channel) // Encoded By K4H1N
 			if(channels) {
 				channels.send(`owo s ${slotCash["1"]}`);
@@ -198,8 +198,8 @@ async function startsAgaing(){
 }
 
 client.on("messageUpdate", async (oldMessage, newMessage) => { // Encoded By K4H1N
-	const cfData = await db.get("cfData") || false
-	if(cfData == false) return
+	const cfData = await db.get("cfData");
+	if(!cfData) return
 	try {
 		if(newMessage.member.id !== owo) return // Encoded By K4H1N
 		//if(newMessage.channel.id !== channel) return
