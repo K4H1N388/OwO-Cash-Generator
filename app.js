@@ -52,10 +52,10 @@ client.on("ready", async () => {
 })
 
 async function cfOpen(){
-	await db.set("cfData", true)
-	let channels = client.channels.get(channel)
+	await db.set("cfData", true);
+	let channels = client.channels.get(channel);
 	if(channel) { // Encoded By K4H1N
-		setTimeout(function(){
+		setTimeout(() => {
 			channels.send(`owo cf ${cfCash["1"]}`)
 		}, 16000)
 	} else { // Encoded By K4H1N
@@ -65,10 +65,10 @@ async function cfOpen(){
 }
 
 async function slotOpen(){
-	await db.set("slotData", true) // Encoded By K4H1N
-	let channels = client.channels.get(channel)
+	await db.set("slotData", true); // Encoded By K4H1N
+	let channels = client.channels.get(channel);
 	if(channel) {
-		setTimeout(function(){
+		setTimeout(() => {
 			channels.send(`owo s ${slotCash["1"]}`)
 		}, 16000) // Encoded By K4H1N
 	} else {
@@ -93,7 +93,7 @@ async function ggCfNextRaunt() { // Encoded By K4H1N
 	var oldCf = await db.get("cfNumber") || 1
 	if(oldCf == 5 || oldCf > 5){
 		setTimeout(async () => {
-			let channels = client.channels.get(channel)
+			let channels = client.channels.get(channel);
 			if(channels) {
 				channels.send(`owo cf ${cfCash["1"]}`);
 				await db.set("cfNumber", 1) // Encoded By K4H1N
@@ -104,7 +104,7 @@ async function ggCfNextRaunt() { // Encoded By K4H1N
 		}, 16000)
 	} else {
 		setTimeout(async () => {
-			let channels = client.channels.get(channel)
+			let channels = client.channels.get(channel);
 			if(channels) { // Encoded By K4H1N
 				channels.send(`owo cf ${cfCash[oldCf]}`);
 				await db.set("cfNumber", oldCf++)
@@ -120,7 +120,7 @@ async function ggSlotNextRount() {
 	var oldSlot = await db.get("slotNumber") || 1
 	if(oldSlot == 5 || oldSlot > 5){ // Encoded By K4H1N
 		setTimeout(async () => {
-			let channels = client.channels.get(channel) // Encoded By K4H1N
+			let channels = client.channels.get(channel); // Encoded By K4H1N
 			if(channels) {
 				channels.send(`owo s ${slotCash["1"]}`);
 				await db.set("slotNumber", 1)
@@ -131,7 +131,7 @@ async function ggSlotNextRount() {
 		}, 16000) // Encoded By K4H1N
 	} else {
 		setTimeout(async () => {
-			let channels = client.channels.get(channel) // Encoded By K4H1N
+			let channels = client.channels.get(channel); // Encoded By K4H1N
 			if(channels) {
 				channels.send(`owo s ${slotCash[oldSlot]}`); // Encoded By K4H1N
 				await db.set("slotNumber", oldSlot++)
@@ -145,11 +145,11 @@ async function ggSlotNextRount() {
 
 async function cfWin(){
 	setTimeout(async () => { // Encoded By K4H1N
-		let channels = client.channels.get(channel)
+		let channels = client.channels.get(channel);
 		if(channels) {
 			channels.send(`owo cf ${cfCash["1"]}`); // Encoded By K4H1N
 			await db.set("cfNumber", 1)
-			console.log(`"cf" command executed`)
+			console.log(`"cf" command executed`);
 		} else { // Encoded By K4H1N
 			console.log(`The command "cf" was not executed because the game channel was not found.`)
 		}
@@ -158,7 +158,7 @@ async function cfWin(){
 
 async function slotWin(){
 	setTimeout(async () => { // Encoded By K4H1N
-		let channels = client.channels.get(channel)
+		let channels = client.channels.get(channel);
 		if(channels) { // Encoded By K4H1N
 			channels.send(`owo s ${slotCash["1"]}`);
 			await db.set("slotNumber", 1) // Encoded By K4H1N
@@ -172,7 +172,7 @@ async function slotWin(){
 async function startsAgaing(){
 	if(cfOnly == true){ // Encoded By K4H1N
 		setTimeout(async () => {
-			let channels = client.channels.get(channel) // Encoded By K4H1N
+			let channels = client.channels.get(channel); // Encoded By K4H1N
 			if(channels) {
 				channels.send(`owo cf ${cfCash["1"]}`);
 				await db.set("cfNumber", 1)
@@ -185,7 +185,7 @@ async function startsAgaing(){
 
 	if(slotOnly == true){
 		setTimeout(async () => { // Encoded By K4H1N
-			let channels = client.channels.get(channel)
+			let channels = client.channels.get(channel);
 			if(channels) {
 				channels.send(`owo s ${slotCash["1"]}`); // Encoded By K4H1N
 				await db.set("slotNumber", 1)
@@ -266,7 +266,7 @@ client.on("messageUpdate", async (oldMessage, newMessage) => { // Encoded By K4H
 		var status = await db.get("owoVerification") || 0
 		var oldSlot = await db.get("slotNumber") || 1 // Encoded By K4H1N
 		if(newMessage.content.includes(":c")) {
-			if(status !== 0) return
+			if(status) return
 
 			switch (oldSlot) {
 				case 1: {
@@ -300,7 +300,7 @@ client.on("messageUpdate", async (oldMessage, newMessage) => { // Encoded By K4H
 				}
 			}
 		} else {
-			if(status !== 0) return // Encoded By K4H1N
+			if(status) return // Encoded By K4H1N
 			await db.set("slotNumber", 1)
 			slotWin()
 		}
